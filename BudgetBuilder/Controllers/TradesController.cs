@@ -20,10 +20,12 @@ namespace BudgetBuilder.Controllers
             {
                 db.Entry(request).State = EntityState.Modified;
                 db.SaveChanges();
-
-                List<Trade> trades = db.Buildings.Find(request.BuildingID).Trades.ToList();
-
-                return Json(new { Success = true, Trades = trades });
+               
+                return Json(new
+                {
+                    Success = true,
+                    db.Buildings.Find(request.BuildingID).Trades
+                });
             }
 
             return Json(new { Success = false, Request = request });
@@ -34,15 +36,16 @@ namespace BudgetBuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-                DateTime timestamp = DateTime.Now;
-                request.DateModified = timestamp;
+                request.DateModified = DateTime.Now;
 
                 db.Entry(request).State = EntityState.Modified;
                 db.SaveChanges();
-
-                List<Trade> trades = db.Buildings.Find(request.BuildingID).Trades.ToList();
-
-                return Json(new { Success = true, Trades = trades });
+     
+                return Json(new
+                {
+                    Success = true,
+                    db.Buildings.Find(request.BuildingID).Trades
+                });
             }
             return Json(new { Success = false });
         }
@@ -56,10 +59,10 @@ namespace BudgetBuilder.Controllers
 
             if(buildingId != null)
             {
-                // Select Buildings where foreign key is equal to current User Id
-                var trades = db.Trades.Where(fk => fk.BuildingID == buildingId).ToList();
-
-                return Json(new { Trades = trades });
+                return Json(
+                new {
+                    Trades = db.Trades.Where(fk => fk.BuildingID == buildingId)
+                });
             }
             return Json(new { Success = false });
         }
@@ -75,9 +78,7 @@ namespace BudgetBuilder.Controllers
                 db.SaveChanges();
                 success = true;
 
-                Building building = db.Buildings.Find(request.BuildingID);
-
-                return Json(new { Success = success, Building = building });
+                return Json(new { Success = success, Building = db.Buildings.Find(request.BuildingID) });
             }
 
             return Json(new { Success = success });
@@ -90,10 +91,8 @@ namespace BudgetBuilder.Controllers
             {
                 db.Entry(request).State = EntityState.Modified;
                 db.SaveChanges();
-
-                Trade trade = db.Trades.Find(request.TradeID);
-
-                return Json(new { Success = true, Trade = trade });
+                
+                return Json(new { Success = true, Trade = db.Trades.Find(request.TradeID) });
             }
             return Json(new { Success = false });
         }

@@ -23,7 +23,7 @@ namespace BudgetBuilder.Controllers
             string userId = request.UserID;
      
             // Select Buildings where foreign key is equal to current User Id
-            var buildings = db.Buildings.Where(fk => fk.ApplicationUserID == userId).ToList();
+            var buildings = db.Buildings.Where(fk => fk.ApplicationUserID == userId);
     
             return Json(new { Buildings = buildings });
         }
@@ -72,8 +72,8 @@ namespace BudgetBuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-                DateTime timestamp = DateTime.Now;
-                request.DateModified = timestamp;
+
+                request.DateModified = DateTime.Now;
 
                 db.Entry(request).State = EntityState.Modified;
                 db.SaveChanges();
